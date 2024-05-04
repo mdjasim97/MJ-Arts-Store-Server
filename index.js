@@ -31,11 +31,8 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
 
-
-
         const database = client.db("artDB")
         const userCollection = database.collection("users")
-
 
         app.get("/users", async(req, res) => {
             const cursor = userCollection.find()
