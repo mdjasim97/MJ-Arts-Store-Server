@@ -33,16 +33,34 @@ async function run() {
 
         const database = client.db("artDB")
         const userCollection = database.collection("users")
+        const craftCollection = database.collection("craft-items")
 
+        // all user find 
+        app.get("/", async(req, res) => {
+            const cursor = craftCollection.find()
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        // all user find 
         app.get("/users", async(req, res) => {
             const cursor = userCollection.find()
             const result = await cursor.toArray()
             res.send(result)
         })
 
+        // User data create 
         app.post("/users", async(req, res) => {
             const reqBody = req.body
             const result = await userCollection.insertOne(reqBody)
+            res.send(result)
+        })
+
+
+        // User data create 
+        app.post("/craftAdd", async(req, res) => {
+            const reqBody = req.body
+            const result = await craftCollection.insertOne(reqBody)
             res.send(result)
         })
 
