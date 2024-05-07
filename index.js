@@ -78,7 +78,7 @@ async function run() {
         })
 
 
-        // craft data delete by id
+        // craft data update by id
         app.put("/update/:id", async(req, res) => {
             const id = req.params.id
             const reqBody = req.body
