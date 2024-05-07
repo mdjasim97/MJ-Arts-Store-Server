@@ -67,6 +67,16 @@ async function run() {
             res.send(result)
         })
 
+        // craft item find by user email 
+        app.get("/myCraft/:email", async(req, res) => {
+            const email = req.params.email;
+            console.log(email)
+            const query = { user_email: req.params.email }
+            const cursor = craftCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
 
         // User data create 
         app.post("/craftAdd", async(req, res) => {
