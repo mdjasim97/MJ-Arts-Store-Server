@@ -36,14 +36,6 @@ async function run() {
         const craftCollection = database.collection("craft-items")
 
 
-
-        // all user find 
-        app.get("/users", async(req, res) => {
-            const cursor = userCollection.find()
-            const result = await cursor.toArray()
-            res.send(result)
-        })
-
         // User data create 
         app.post("/users", async(req, res) => {
             const reqBody = req.body
@@ -53,7 +45,7 @@ async function run() {
 
 
         // all craft item find 
-        app.get("/", async(req, res) => {
+        app.get("/craft", async(req, res) => {
             const cursor = craftCollection.find()
             const result = await cursor.toArray()
             res.send(result)
@@ -85,6 +77,44 @@ async function run() {
             res.send(result)
         })
 
+
+        // craft data delete by id
+        app.put("/update/:id", async(req, res) => {
+            const id = req.params.id
+            const reqBody = req.body
+            const query = { _id: new ObjectId(id) }
+            const options = { upsert: true }
+
+            const updateCraft = {
+                $set: {
+                    item_name: reqBody.item_name,
+                    subcategory_name: reqBody.subcategory_name,
+                    short_description: reqBody.short_description,
+                    price: reqBody.price,
+                    rating: reqBody.rating,
+                    customization: reqBody.customization,
+                    processing_time: reqBody.processing_time,
+                    stockStatus: reqBody.stockStatus,
+                    user_name: reqBody.user_name,
+                    user_email: reqBody.user_email,
+                    image: reqBody.image,
+                }
+            }
+
+            const result = await craftCollection.updateOne(query, updateCraft, options)
+            res.send(result)
+            console.log("update route hitting")
+        })
+
+
+        // craft data delete by id
+        app.delete("/delete/:id", async(req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await craftCollection.deleteOne(query)
+            res.send(result)
+        })
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -104,7 +134,7 @@ run().catch(console.dir);
 
 
 app.use("/", (req, res) => {
-    res.send("Art & Craft Server Start.")
+    res.send("art and craft server start now.")
 })
 
 
